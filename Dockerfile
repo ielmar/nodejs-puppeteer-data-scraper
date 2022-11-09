@@ -9,4 +9,4 @@ RUN yarn
 
 COPY . .
 EXPOSE 8080
-CMD ["node" , "index.js"]
+CMD ["yarn" , "start"]
