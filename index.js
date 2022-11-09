@@ -23,7 +23,12 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/download", (req, res) => {
-  if (isFinished) {
+  if (isRunning) {
+    return res.json({
+      message: "Still running",
+    });
+  }
+  else if (isFinished) {
     const file = `${__dirname}/az.dictionary.txt`;
     res.download(file);
   } else {
@@ -34,6 +39,12 @@ app.get("/download", (req, res) => {
 });
 
 app.get("/start", async (req, res) => {
+  if (isRunning) {
+    return res.json({
+      message: "Already running",
+    });
+  }
+
   try {
     const browser = await puppeteer.launch({
       headless: IS_HEADLESS,
