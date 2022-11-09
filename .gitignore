@@ -15,4 +15,4 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-*.txt
+az.dictionary.txt
