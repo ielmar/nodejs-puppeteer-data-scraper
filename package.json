@@ -2,13 +2,14 @@
   "name": "obastan-parser",
   "version": "1.0.0",
   "description": "",
-  "main": "cron.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.18.2",
     "puppeteer": "^19.2.2",
     "sqlite3": "^5.1.2"
   }
