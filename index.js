@@ -1,5 +1,5 @@
 const express = require("express");
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
 const fs = require("fs");
 
 const app = express();
@@ -99,7 +99,9 @@ app.get("/start", async (req, res) => {
     console.log(err);
     await browser.close();
     console.log("Browser Closed");
-    res.send("Some error occurred");
+    res.json({
+      message: "Some error occurred"
+    });
   }
 });
 
