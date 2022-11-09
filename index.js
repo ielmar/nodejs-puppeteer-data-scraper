@@ -1,6 +1,5 @@
 const express = require("express");
 const puppeteer = require("puppeteer-core");
-const { executablePath } = require('puppeteer-core')
 const fs = require("fs");
 
 const app = express();
@@ -54,7 +53,7 @@ app.get("/start", async (req, res) => {
         "--disable-setuid-sandbox",
         "--disable-dev-shm-usage",
       ],
-      executablePath: executablePath(),
+    executablePath: process.env.CHROME_BIN,
     });
 
     const page = await browser.newPage();
