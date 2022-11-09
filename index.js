@@ -8,14 +8,27 @@ const iPhone = puppeteer.KnownDevices["iPhone 8"];
 
 let currentPageNo = 0;
 let isRunning = false;
+let isFinished = false
 const numberOfPages = 2035;
 
 const [NODE, INDEX, IS_HEADLESS = true] = process.argv;
+console.log("IS_HEADLESS", IS_HEADLESS);
 
 app.get("/", async (req, res) => {
   return res.json({
     message: isRunning ? `Currently on page ${currentPageNo} of ${numberOfPages}` : "Not running"
   });
+});
+
+app.get('/download', (req, res) => {
+  if (isFinished) {
+    const file = `${__dirname}/az.dictionary.txt`;
+    res.download(file);
+  } else {
+    res.json({
+      message: "Not finished"
+    });
+  }
 });
 
 app.get("/start", async (req, res) => {
@@ -30,6 +43,7 @@ app.get("/start", async (req, res) => {
     });
 
     isRunning = true
+    res.redirect('/');  
 
     const page = await browser.newPage();
 
@@ -78,6 +92,7 @@ app.get("/start", async (req, res) => {
     }
 
     await browser.close();
+    isFinished = true
     console.log("Browser Closed");
     res.send("Scraping Done");
   } catch (err) {
