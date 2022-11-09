@@ -1,5 +1,6 @@
 const express = require("express");
 const puppeteer = require("puppeteer-core");
+const { executablePath } = require('puppeteer-core')
 const fs = require("fs");
 
 const app = express();
@@ -8,25 +9,26 @@ const iPhone = puppeteer.KnownDevices["iPhone 8"];
 
 let currentPageNo = 0;
 let isRunning = false;
-let isFinished = false
+let isFinished = false;
 const numberOfPages = 2035;
 
 const [NODE, INDEX, IS_HEADLESS = true] = process.argv;
-console.log("IS_HEADLESS", IS_HEADLESS);
 
 app.get("/", async (req, res) => {
   return res.json({
-    message: isRunning ? `Currently on page ${currentPageNo} of ${numberOfPages}` : "Not running"
+    message: isRunning
+      ? `Currently on page ${currentPageNo} of ${numberOfPages}`
+      : "Not running",
   });
 });
 
-app.get('/download', (req, res) => {
+app.get("/download", (req, res) => {
   if (isFinished) {
     const file = `${__dirname}/az.dictionary.txt`;
     res.download(file);
   } else {
     res.json({
-      message: "Not finished"
+      message: "Not finished",
     });
   }
 });
@@ -37,13 +39,12 @@ app.get("/start", async (req, res) => {
       headless: IS_HEADLESS,
       args: [
         "--no-sandbox",
-        "--window-size=1024,728",
+        // "--window-size=1024,728",
         "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
       ],
+      executablePath: executablePath(),
     });
-
-    isRunning = true
-    res.redirect('/');  
 
     const page = await browser.newPage();
 
@@ -61,6 +62,9 @@ app.get("/start", async (req, res) => {
     await page.setDefaultNavigationTimeout(90000);
 
     await page.setJavaScriptEnabled(false);
+
+    isRunning = true;
+    res.redirect("/");
 
     // it has 2035 pages if we start from the alphabet a
     for (let i = 0; i <= numberOfPages; i++) {
@@ -92,7 +96,7 @@ app.get("/start", async (req, res) => {
     }
 
     await browser.close();
-    isFinished = true
+    isFinished = true;
     console.log("Browser Closed");
     res.send("Scraping Done");
   } catch (err) {
@@ -100,7 +104,7 @@ app.get("/start", async (req, res) => {
     await browser.close();
     console.log("Browser Closed");
     res.json({
-      message: "Some error occurred"
+      message: "Some error occurred",
     });
   }
 });
