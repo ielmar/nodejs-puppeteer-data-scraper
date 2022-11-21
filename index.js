@@ -102,7 +102,7 @@ app.get("/start", async (req, res) => {
     res.redirect("/");
 
     // it has 2035 pages if we start from the alphabet a
-    for (let i = 0; i <= numberOfPages; i++) {
+    for (let i = 1; i <= numberOfPages; i++) {
       currentPageNo = i;
       let linkToScrape = `https://obastan.com/azerbaycan-dilinin-orfoqrafiya-lugeti/a?l=az&p=${i}`;
 
@@ -115,8 +115,9 @@ app.get("/start", async (req, res) => {
       const words = await page.evaluate((selector) => {
         const anchors_node_list = document.querySelectorAll(selector);
         const anchors = [...anchors_node_list];
-        return anchors.map((link) => link.innerText);
+        return anchors.map((link) => link.innerText.includes(" ") ? link.innerText.split(" ")[0] : link.innerText);
       }, "div.wli-w > h3");
+      console.log(words)
 
       const word_string = words.join("\n") + "\n";
 
