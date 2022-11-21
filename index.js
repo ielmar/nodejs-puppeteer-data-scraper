@@ -117,7 +117,6 @@ app.get("/start", async (req, res) => {
         const anchors = [...anchors_node_list];
         return anchors.map((link) => link.innerText.includes(" ") ? link.innerText.split(" ")[0] : link.innerText);
       }, "div.wli-w > h3");
-      console.log(words)
 
       const word_string = words.join("\n") + "\n";
 
@@ -127,6 +126,8 @@ app.get("/start", async (req, res) => {
         { flag: "a+" },
         (err) => {}
       );
+
+      console.log(`Page ${i} of ${numberOfPages} done`);
 
       await page.waitForTimeout(10000);
     }
