@@ -1,4 +1,5 @@
 node_modules
+build
 
 #fly file
 fly.toml
@@ -15,4 +16,5 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-az.dictionary.txt
+/az.dictionary.txt
+/az.dictionary-bkp.txt
