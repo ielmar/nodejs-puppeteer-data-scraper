@@ -1,4 +1,5 @@
 FROM zenika/alpine-chrome:with-puppeteer
+# FROM ghcr.io/puppeteer/puppeteer:latest
 
 USER root
 ENV NODE_ENV=production
