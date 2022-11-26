@@ -109,7 +109,6 @@ app.get("/start", async (req: Request, res: Response) => {
     await browser.close();
     isFinished = true;
     console.log("Browser Closed");
-    res.send("Scraping Done");
   } catch (err) {
     console.log(err);
     console.log("Browser Closed");
